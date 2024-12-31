@@ -1,0 +1,28 @@
+version: '3'
+services:
+  app:
+    build: .
+    ports:
+      - "8085:8085"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://51.77.210.237:5432/faculte  # Utiliser le nom du conteneur postgres0
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=123456
+      - TZ=Africa/Tunis
+    volumes:
+      - ./uploads:/app/src/main/resources/static/uploads  # Volume pour persister les fichiers uploads
+    networks:
+      - faculte-reseau
+
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: faculte
+    networks:
+      - faculte-reseau
+
+networks:
+  faculte-reseau:
+    driver: bridge

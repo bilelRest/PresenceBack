@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
+    <script src="/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+    <title>Ajouter Details Utilisateur</title>
+</head>
+<body>
+<div layout:fragment="content1" class="container my-2">
+    <div class="container mt-2">
+        <div class="card">
+            <div class="card-header">
+                <h2>Ajouter un utilisateur</h2>
+
+            </div>
+            <div class="container card-body mt-2 ">
+
+                <form th:action="@{/saveUserDetail?us=}+${us}"  method="post" class="row g-3">
+
+
+                    <!-- Email -->
+                    <div class="col-md-6">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" th:field="*{newUser.email}" class="form-control" id="email" placeholder="Email" required>
+                    </div>
+
+                    <!-- Adresse 1 -->
+                    <div class="col-md-6">
+                        <label for="adresse" class="form-label">Adresse</label>
+                        <input type="text" th:field="*{newUser.adresse}" class="form-control" id="adresse" placeholder="Adresse">
+                    </div>
+
+                    <!-- Adresse 2 -->
+                    <div class="col-md-6">
+                        <label for="adresse2" class="form-label">Adresse 2</label>
+                        <input type="text" th:field="*{newUser.adresse2}" class="form-control" id="adresse2" placeholder="Adresse complémentaire">
+                    </div>
+
+
+
+                    <!-- Téléphone 1 -->
+                    <div class="col-md-6">
+                        <label for="telephone1" class="form-label">Téléphone 1</label>
+                        <input type="text" th:field="*{newUser.telephone1}" class="form-control" id="telephone1" placeholder="Téléphone">
+                    </div>
+
+                    <!-- Téléphone 2 -->
+                    <div class="col-md-6">
+                        <label for="telephone2" class="form-label">Téléphone 2</label>
+                        <input type="text" th:field="*{newUser.telephone2}" class="form-control" id="telephone2" placeholder="Téléphone secondaire">
+                    </div>
+
+                    <!-- Téléphone 3 -->
+                    <div class="col-md-6">
+                        <label for="telephone3" class="form-label">Téléphone 3</label>
+                        <input type="text" th:field="*{newUser.telephone3}" class="form-control" id="telephone3" placeholder="Téléphone supplémentaire">
+                    </div>
+
+                    <!-- Actif -->
+
+
+
+
+
+                    <!-- Submit Button -->
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">Ajouter utilisateur</button>
+                    </div>
+                </form>
+            </div>
+        </div></div></div>
+</body>
+</html>

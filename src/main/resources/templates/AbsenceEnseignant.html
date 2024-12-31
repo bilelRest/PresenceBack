@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Absences Enseignants</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
+    <script src="/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="/webjars/bootstrap-icons/1.10.5/font/bootstrap-icons.css">
+    <style>
+        /* Style pour surligner la ligne au survol */
+        .table-td:hover {
+            background-color: greenyellow;
+        }
+
+        /* Style pour la ligne sélectionnée */
+        .selected {
+            background-color: #d3d3d3;
+        }
+    </style>
+</head>
+
+<body>
+<div layout:fragment="content1">
+    <div class="container mt-2">
+        <div class="card">
+            <div class="card-header">
+                <h1>Absences Enseignants</h1>
+            </div>
+
+            <div class="container mt-3"> <!-- Conteneur de recherche et filtres -->
+                <form th:action="@{/AbsenceEnseignant}" method="get">
+                    <div class="row mb-3 align-items-center"> <!-- Ligne de recherche et filtre par enseignant -->
+
+                        <!-- Champ de recherche par mot-clé -->
+                        <div class="col-md-5">
+                            <div class="dropdown">
+                                <label style="padding-bottom:2%">Filtre Enseignants</label>
+                                <input title="Saisissez une lettre de l'enseignant souhaité" name="keyword1" th:value="${keyword1}" placeholder="Saisir Nom Enseignant.."
+                                       class="form-control" oninput="toggleShow1()" type="text" id="dropdownMenuInput"/>
+                                <span id="dropDownEns" class="dropdown-menu w-100" style="display: none;">
+                        <table class="table">
+                            <tbody id="tableEnsBody">
+                                <tr th:each="abs, ind : ${absEns}" class="table-row">
+                                    <td class="table-td">
+                                        <button name="keyword" th:value="${abs.nomEnseignant}"
+                                                class="btn btn-link text-dark"
+                                                style="text-decoration:none;"
+                                                th:text="${abs.nomEnseignant}"
+                                                onclick="this.form.submit()"></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </span>
+                            </div>
+                        </div>
+
+                        <!-- Filtre par département -->
+                        <div class="col-md-3">
+                            <label class="form-label mb-2">Département</label>
+                            <select title="Filtrer par département" class="form-select" name="dep" onchange="this.form.submit()">
+                                <option th:text="${dep}"></option>
+                                <option value="">Tous</option>
+                                <optgroup label="Départements">
+                                    <option value="SEG">SEG - Gestion</option>
+                                    <option value="TI">TI - Informatique</option>
+                                    <option value="GP">GP - Génie Procédé</option>
+                                    <option value="GM">GM - Génie Mécanique</option>
+                                    <option value="GC">GC - Génie Civil</option>
+                                </optgroup>
+                            </select>
+                        </div>
+
+
+
+                        <div class="row mb-3 align-items-center"> <!-- Ligne pour les dates -->
+
+                        <!-- Filtre par date de début -->
+                        <div class="col-md-3">
+                            <label for="date1" class="form-label">Début</label>
+                            <input title="Choisir la date de début" type="date" id="date1" name="date1" class="form-control" th:value="${date1}"
+                                 onchange="if(this.value) this.form.submit()"  >
+                        </div>
+
+                        <!-- Filtre par date de fin -->
+                        <div class="col-md-3">
+                            <label for="date2" class="form-label">Fin</label>
+                            <input title="Choisir la date de fin" type="date" id="date2" name="date2" class="form-control" th:value="${date2}"
+                                   onchange="if(this.value) this.form.submit()"     >
+                        </div>
+
+                            <div class="col-md-3">
+                                <label for="cren" class="form-label">
+                                    Séance
+                                </label>
+                                <select title="Choisir le créneaux horaire souhaité " class="form-select" name="cren" id="cren" th:value="${cren}" onchange="this.form.submit()">
+                                  <option th:text="${cren}"></option>
+                                    <option value="">Tous</option>
+
+                                    <optgroup label="Séance Simple">
+                                        <option value="1">1 - 08h15 à 09h45</option>
+                                        <option value="2">2 - 10h00 à 11h30</option>
+                                        <option value="3">3 - 11h45 à 13h15</option>
+                                        <option value="4">4 - 13h20 à 14h50</option>
+                                        <option value="5">5 - 14h55 à 16h25</option>
+                                        <option value="6">6 - 16h30 à 18h00</option>
+                                    </optgroup>
+
+                                    <optgroup label="Séance Double">
+                                        <option value="7">7 - 08h00 à 11h30</option>
+                                        <option value="8">8 - 10h00 à 13h20</option>
+                                        <option value="9">9 - 11h45 à 14h50</option>
+                                        <option value="10">10 - 13h25 à 16h25</option>
+                                        <option value="11">11 - 14h55 à 18h00</option>
+                                    </optgroup>
+                                </select>
+
+
+                                <!-- Bouton de réinitialisation -->
+
+                            </div></div></div>
+                </form>
+                <div class="col-md-2 d-flex align-items-end">
+                    <form th:action="@{/AbsenceEnseignant}" method="get">
+                        <input type="hidden" name="keyword" th:value="''" />
+                        <input type="hidden" name="dep" th:value="''" />
+                        <button title="Initialiser les champs" class="btn btn-outline-secondary w-100" type="submit">Réinitialiser</button>
+
+                    </form>
+                </div>
+            </div>
+
+            <!-- Filtrage du dropdown -->
+            <script>
+                function toggleShow1(){
+                    var dropdownMenuInput = document.getElementById('dropdownMenuInput').value.toLowerCase();
+                    var span = document.getElementById('dropDownEns');
+                    var rows = document.querySelectorAll('#tableEnsBody .table-row');
+
+                    span.style.display = (dropdownMenuInput.length > 0) ? "block" : "none";
+
+                    rows.forEach(row => {
+                        const cells = Array.from(row.getElementsByTagName('td'));
+                        const matchFound = cells.some(cell => cell.textContent.toLowerCase().includes(dropdownMenuInput));
+                        row.style.display = matchFound ? "" : "none";
+                    });
+                }
+            </script>
+
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Nom de salle</th>
+                        <th>Nom Matière</th>
+                        <th>Département</th>
+                        <th>Enseignant</th>
+                        <th>Nom De Séance</th>
+                        <th>Année</th>
+                        <th>Jour</th>
+                        <th>Date</th>
+                        <th>Notifié</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="abs : ${listAbsence}">
+                        <td th:text="${abs.nom_salle}"></td>
+                        <td th:text="${abs.nom_matiere}"></td>
+                        <td th:text="${abs.nomdepfiliere}"></td>
+                        <td th:text="${abs.enseignant.nomEnseignant}"></td>
+                        <td th:text="${abs.nom_seance}"></td>
+                        <td th:text="${abs.annee1}"></td>
+                        <td th:text="${abs.nom_jour}"></td>
+                        <td th:text="${abs.date}"></td>
+                        <td th:text="${abs.notified ? 'Oui' : 'Non'}"></td>
+                        <td>
+                            <button th:class="${abs.notified} ? 'd-none' : 'btn btn-outline-primary'"><i title="Envoyer un email de notification" class="bi bi-envelope-at"></i></button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card-footer">
+                <ul class="pagination justify-content-center mb-0">
+                    <!-- Boutons de pagination -->
+                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                        <a title="Première Page" class="page-link" th:href="@{/AbsenceEnseignant(page=${0},date1=${date1},date2=${date2}, keyword=${keyword})}">&laquo;&laquo;</a>
+                    </li>
+                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                        <a title="Page Précédente" class="page-link"
+                           th:href="@{/AbsenceEnseignant(page=${currentPage - 1}, keyword=${keyword})}">&laquo;</a>
+                    </li>
+                    <li class="page-item" th:each="page, status : ${pages}"
+                        th:class="${status.index == currentPage ? ' active' : 'd-none'}">
+                        <a title="Page En Cour" class="page-link" th:text="${status.index + 1} + ' / ' + ${pages.length}"></a>
+                    </li>
+                    <li class="page-item" th:classappend="${currentPage == pages.length - 1} ? 'disabled'">
+                        <a title="Page Suivante" class="page-link"
+                           th:href="@{/AbsenceEnseignant(page=${currentPage + 1}, keyword=${keyword})}">&raquo;</a>
+                    </li>
+                    <li class="page-item" th:classappend="${currentPage == pages.length - 1} ? 'disabled'">
+                        <a title="Dernière Page" class="page-link"
+                           th:href="@{/AbsenceEnseignant(page=${pages.length - 1}, keyword=${keyword})}">&raquo;&raquo;</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

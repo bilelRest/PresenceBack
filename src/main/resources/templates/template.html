@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/webjars/bootstrap-icons/1.10.5/font/bootstrap-icons.css">
+    <script src="/webjars/bootstrap/5.3.3/js/bootstrap.bundle.js"></script>
+
+    <title>Template</title>
+    <style>
+        /* Hauteur personnalisée pour le off-canvas */
+        #offcanvasMenu {
+            width: 250px; /* Ajustez la largeur si nécessaire */
+            height: 100%;
+        }
+        .blink {
+            animation: blinker 1s linear infinite;
+        }
+        @keyframes blinker {
+            50% {
+                opacity: 0; /* Clignote à 50% */
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-primary bg-primary">
+    <div class="container-fluid">
+        <!-- Bouton pour ouvrir le menu à gauche -->
+        <button class="btn btn-outline-light me-auto" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu">
+            <i class="bi bi-list"></i>
+        </button>
+        <div class="navbar-text text-light ms-auto">
+            <img class="navbar-brand img-fluid  " alt="Logo Iset" style="width:70px; height:50px;" src="/logo.png"/>
+        </div>
+
+        <div class="navbar-text text-light ms-auto">
+            <h3>Institut Supérieur Des Études Technologiques De Sfax</h3>
+        </div>
+
+        <div class="navbar-text text-light ms-auto">
+            <img class="navbar-brand img-fluid rounded-circle img-thumbnail" alt="Thumbnail image" style="width:50px; height:50px;" th:src="${user.photo}"/>
+        </div>
+    <div class="dropdown ms-auto">
+        <button th:text="${user.nom}+' '+${user.prenom}" class="btn btn-outline-light dropdown-toggle" onclick="toggleShow()" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+        </button>
+        <ul  id="dropDown"class="dropdown-menu " aria-labelledby="dropdownMenuButton1">
+            <li><div class="text-center"><img class="img-fluid  " style="width:150px;height:150px" th:src="${user.photo}"></div></li>
+            <br>
+            <li class="text-secondary text-left" style="border-top:solid  0.5px"><a class="dropdown-item text-left text-secondary" th:href="@{/EditUser}+'?id='+${user.id}"><i class="bi bi-person-circle m-lg-2"></i>Profile</a></li>
+
+            <li class="text-secondary" style="border-top:solid  1px"><a  class="dropdown-item text-secondary" href="/deconnect">Deconnecter<i class="bi bi-box-arrow-right m-lg-2"></i></a></li>
+        </ul>
+    </div>
+        <script>
+            function toggleShow(){
+                //var toggle=document.getElementById('dropdownMenuButton1')
+                var span=document.getElementById('dropDown')
+                span.style.display = (span.style.display === "none" || span.style.display === "") ? "block" : "none"; // Affiche ou cache le sous-menu
+
+            }
+        </script>
+
+        <span class="navbar-text text-light ms-auto">
+
+        </span>
+    </div>
+</nav>
+        </div>
+    </div>
+</nav>
+
+<!-- Offcanvas Menu -->
+<div class="offcanvas offcanvas-start bg-primary" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasMenuLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title text-light" id="offcanvasMenuLabel"><i class="bi bi-list"></i></h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a th:class="${isAdmin}?'nav-link text-light':'d-none'" href="/Dashboard"><i style="margin-right:5px" class="bi bi-speedometer"></i>Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a th:class="${isAdmin}?'nav-link text-light':'d-none'" href="/Utilisateurs"><i style="margin-right:5px" class="bi bi-people-fill"></i>Utilisateurs</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-light" style="cursor: pointer;" onclick="toggleMenu()"><i style="margin-right:5px" class="bi bi-bookmark-x"></i>Absence</a>
+            </li>
+
+            <div id="dropMenu" class="container" style="display:none;">
+                <ul class="nav flex-column ms-2">
+                    <li class="nav-item">
+                        <a th:attr="style=(${pathCourant}=='/AbsenceEnseignant' ? 'color:grey;' : 'color:white;')" th:class="${isAdmin}?'nav-link ':'d-none'" href="/AbsenceEnseignant">
+                            <i style="margin-right:5px" class="bi bi-person-video3"></i> Enseignants
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:attr="style=(${pathCourant}=='/AbsenceEtudiant' ? 'color:grey;' : 'color:white;')" class="nav-link" href="/AbsenceEtudiant"><i style="margin-right:5px" class="bi bi-person-x-fill"></i> Étudiants</a>
+                    </li>
+                </ul>
+            </div>
+
+            <li class="nav-item">
+                <a class="nav-link text-light" href="#"><i style="margin-right:5px" class="bi bi-buildings"></i>Scolarité</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <section layout:fragment="content1" style="margin-bottom:20px">
+        <!-- Contenu de la section -->
+    </section>
+</div>
+
+<script>
+    function toggleMenu() {
+        var menu = document.getElementById('dropMenu');
+        menu.style.display = (menu.style.display === "none" || menu.style.display === "") ? "block" : "none"; // Affiche ou cache le sous-menu
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier Utilisateur</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
+    <script src="/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+<div layout:fragment="content1" class="container my-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white py-2">
+            <h2 class="mb-0 fs-5" th:text="'Modifier : ' + ${userEdit.nom} + ' ' + ${userEdit.prenom}"></h2>
+        </div>
+        <div class="card-body p-4">
+            <form th:action="@{/saveUser}" th:object="${userEdit}" method="post" class="row g-3">
+                <!-- Photo et résumé -->
+                <div class="col-md-12 d-flex">
+                    <!-- Photo -->
+                    <div class="me-4">
+                        <img style="width:120px; height:120px;" th:src="${userEdit.photo}" class="rounded border">
+                        <a class="d-block mt-2 text-primary" th:href="@{/AddUserPhoto?us=}+${userEdit.username}">Changer la photo</a>
+                    </div>
+                    <!-- Résumé -->
+                    <div class="flex-grow-1">
+                        <div class="card p-3 shadow-sm">
+                            <h6 class="border-bottom pb-2">Résumé</h6>
+                            <div class="row mb-2">
+                                <label for="username" class="col-sm-4 col-form-label">Nom d'utilisateur</label>
+                                <div class="col-sm-8">
+                                    <input readonly type="text" th:field="${userEdit.username}" class="form-control form-control-sm" id="username">
+                                    <a class="text-primary mt-1 d-block" th:href="@{/CheckPoint?id=}+${userEdit.id}">Changer le mot de passe</a>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-sm-4 col-form-label">Nom et Prénom</label>
+                                <div class="col-sm-8">
+                                    <span class="text-secondary" th:text="${userEdit.nom} + ' ' + ${userEdit.prenom}"></span>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-sm-4 col-form-label">Tel°</label>
+                                <div class="col-sm-8">
+                                    <span class="text-secondary" th:text="${userEdit.telephone1}"></span>
+                                </div>
+                            </div>
+
+                            <!-- Rôles -->
+                            <div th:class="${isAdmin} ? 'row mb-2' : 'd-none'">
+                                <label class="col-sm-4 col-form-label">Rôle(s)</label>
+                                <div class="col-sm-8">
+                                    <ol class="list-unstyled m-0 ps-3">
+                                        <li th:each="role : ${roleCollection}" class="text-secondary" th:text="${role.roleName}"></li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bloc gauche et droit -->
+                <div class="row mt-4">
+                    <!-- Bloc gauche -->
+                    <div class="col-md-6">
+                        <div class="row mb-3">
+                            <label for="nom" class="col-sm-4 col-form-label">Nom</label>
+                            <div class="col-sm-8">
+                                <input type="text" th:field="${userEdit.nom}" class="form-control form-control-sm" id="nom" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="email" class="col-sm-4 col-form-label">Email</label>
+                            <div class="col-sm-8">
+                                <input type="email" th:field="${userEdit.email}" class="form-control form-control-sm" id="email" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="adresse" class="col-sm-4 col-form-label">Adresse</label>
+                            <div class="col-sm-8">
+                                <input type="text" th:field="${userEdit.adresse}" class="form-control form-control-sm" id="adresse">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bloc droit -->
+                    <div class="col-md-6">
+                        <div class="row mb-3">
+                            <label for="prenom" class="col-sm-4 col-form-label">Prénom</label>
+                            <div class="col-sm-8">
+                                <input type="text" th:field="${userEdit.prenom}" class="form-control form-control-sm" id="prenom" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="telephone1" class="col-sm-4 col-form-label">Téléphone principal</label>
+                            <div class="col-sm-8">
+                                <input type="text" th:field="${userEdit.telephone1}" class="form-control form-control-sm" id="telephone1">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="adresse2" class="col-sm-4 col-form-label">Complément d'adresse</label>
+                            <div class="col-sm-8">
+                                <input type="text" th:field="${userEdit.adresse2}" class="form-control form-control-sm" id="adresse2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statut actif (si admin) -->
+                <div th:class="${isAdmin} ? 'row mb-3' : 'd-none'">
+                    <label for="actif" class="col-sm-4 col-form-label">Statut actif</label>
+                    <div class="col-sm-2">
+                        <select th:field="${userEdit.actif}" class="form-select form-select-sm" id="actif">
+                            <option value="true">Oui</option>
+                            <option value="false">Non</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Boutons -->
+                <div class="col-12 d-flex justify-content-end gap-2 mt-3">
+                    <button type="submit" class="btn btn-primary btn-sm">Enregistrer</button>
+                    <a th:class="${isAdmin} ? 'btn btn-secondary btn-sm' : 'd-none'" th:href="@{/Utilisateurs}">Retour</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

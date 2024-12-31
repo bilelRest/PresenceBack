@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Utilisateurs</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
+    <script src="/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+    <style>
+        #survol:hover{
+            visibility:visible;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content1" class="container my-2">
+    <div class="container card">
+        <div style="display:inline" class=" navbar bg-primary text-light">
+           <div class="navbar">
+            <div class="navbar-item"><h1>Liste des utilisateur</h1></div>
+               <div class="navbar-item"><a style="visibility:visible;color:white;text-decoration:none"  href="/AddUser"><h5><i id="icn" title="Ajouter Utilisateur" class="bi bi-person-plus m-lg-2"></i></h5></a></div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <form class="from" method="post" action="#">
+                    <label for="filtreUsers" class="form-froup" >Filtre :</label>
+                    <input class="form-group" type="text" placeholder="Rechercher" id="filtreUsers" name="filtreUsers"/>
+                    <button title="filtrer" type="submit" class="btn btn-outline-secondary">Filtrer</button>
+                </form>
+            </div>
+        </div>
+
+
+
+        <div style="display:flex" class="container  card-body">
+            <table class="table table-bordered table-responsive table-striped">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Nom d'utilisateur</th>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Email</th>
+                    <th>Date de Naissance</th>
+                    <th>Téléphone 1</th>
+                    <th>Actif</th>
+                    <th>Role(s)</th>
+                    <th></th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Boucle Thymeleaf pour afficher les utilisateurs -->
+                <tr th:each="us : ${users}">
+                    <td th:text="${us.username}"></td>
+                    <td th:text="${us.nom}"></td>
+                    <td th:text="${us.prenom}"></td>
+                    <td th:text="${us.email}"></td>
+                    <td th:text="${us.dateNaissance}"></td>
+                    <td th:text="${us.telephone1}"></td>
+                    <td th:text="${us.actif ? 'Oui' : 'Non'}"></td>
+                    <td>
+                        <ul>
+                            <li th:each="role : ${us.roleCollection}" th:text="${role.roleName}"></li>
+                        </ul>
+                    </td>
+                    <td style="display:inline-flex">
+
+                        <a th:href="@{/EditUser?id=}+${us.id}" title="Editer" class="btn btn-info m-lg-2"><i  class="bi bi-pencil-square m-lg-2"></i></a>
+                        <form th:action="@{/lockUnlockUser}" method="post" style="display: inline;">
+                            <input type="hidden" name="id" th:value="${us.id}">
+                            <button onclick="return confirm('Êtes-vous sûr de vouloir modifier l\'état de cet utilisateur ?')" type="submit" class="btn btn-warning m-lg-2">
+                                <i th:title="${us.actif}?'Désactiver':'Activer'" th:class="${us.actif} ? 'bi bi-lock' : 'bi bi-unlock'"></i>
+                            </button>
+                        </form>
+
+                        <form th:action="@{/deleteUser}" method="post" style="display: inline;">
+                            <input type="hidden" name="id" th:value="${us.id}">
+                            <button title="supprimer" onclick="return confirm('Etes vous sur de vouloir sprrimer cette utilisateur ?')" type="submit" class="btn btn-danger m-lg-2">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                        </form>
+
+
+                    </td>
+
+
+                </tr>
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/webjars/bootstrap-icons/1.10.5/font/bootstrap-icons.css">
+    <script src="/webjars/bootstrap/5.3.3/js/bootstrap.bundle.js"></script>
+
+    <title>Profile</title></head><body>
+<form method="post" enctype="multipart/form-data" th:action="@{/saveUser}">
+    <!-- Autres champs pour AppUser ici -->
+
+    <div class="form-group">
+        <label for="photo">Photo:</label>
+        <input type="file" class="form-control-file" id="photo" name="photo" />
+    </div>
+
+
+    <button type="submit" class="btn btn-primary">Mettre à jour</button>
+</form>
+<div>
+    <h1 style="color:red" th:text="${errorFormat}">1111</h1>
+</div>
+</body></html>

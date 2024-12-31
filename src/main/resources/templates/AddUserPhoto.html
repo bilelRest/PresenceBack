@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template">
+
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
+    <script src="/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function refreshPage() {
+            location.reload(true); // 'true' force le rechargement depuis le serveur
+        }
+    </script>
+
+    <title>Ajouter Photo</title>
+</head>
+<body>
+<div layout:fragment="content1" class="container my-2">
+    <div><h1 th:text="${newUser.username}"></h1>
+    <img style="height:200px;width:200px" th:src="${newUser.photo}"><h3 class="text-danger" th:text="${errFormat}"></h3>
+        <h3 th:text="${success}"></h3>
+    </div>
+    <div>
+<form th:action="@{/AddUserImg?us=}+${newUser.username}" th:object="${newUser}" method="post" enctype="multipart/form-data" class="row g-3">
+        <div class="col-md-6">
+            <label for="photo" class="form-label">Photo</label>
+            <input type="file" th:field="${newUser.photo}" class="form-control" id="photo">
+        </div>
+        <div style="display:inline-flex" class="col-12">
+            <button  type="submit" class="btn btn-primary m-lg-2">Enregistrer</button>
+            <a class="btn btn-success m-lg-2" th:href="@{/EditUser}+'?id='+${newUser.id}">Terminé</a>
+        </div>
+    </form>
+
+
+</div></div>
+</body>
+</html>
