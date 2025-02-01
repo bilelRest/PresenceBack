@@ -1,6 +1,7 @@
 package tn.isetsf.presence.webThymeleaf;
 
 import lombok.Data;
+import net.sf.jasperreports.engine.JRException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,10 @@ import org.springframework.data.domain.PageRequest;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,9 +27,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import tn.isetsf.presence.CalculDate;
 import tn.isetsf.presence.Entity.LigneAbsence;
+import tn.isetsf.presence.Entity.LigneAbsenceDTO;
 import tn.isetsf.presence.Repository.EnstRepo;
 import tn.isetsf.presence.Repository.LigneAbsenceRepo;
 import tn.isetsf.presence.Repository.SalleRepo;
+import tn.isetsf.presence.report.Reporter;
 import tn.isetsf.presence.sec.entity.AppRole;
 import tn.isetsf.presence.sec.entity.AppUser;
 import tn.isetsf.presence.sec.entity.Logged;
@@ -40,6 +47,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -47,6 +55,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @Transactional
@@ -72,7 +81,7 @@ public class AdminController {
     private AppUserRepo appUserRepo;
 
 
-    public AdminController(LigneAbsenceRepo ligneAbsenceRepo, EnstRepo enstRepo, SalleRepo salleRepo, ServerStatusService serverStatusService, AppUserRepo appUserRepo) {
+    public AdminController(LigneAbsenceRepo ligneAbsenceRepo, EnstRepo enstRepo, SalleRepo salleRepo, ServerStatusService serverStatusService, AppUserRepo appUserRepo, Reporter reporter) {
         this.ligneAbsenceRepo = ligneAbsenceRepo;
         this.enstRepo = enstRepo;
         this.salleRepo = salleRepo;
@@ -80,6 +89,7 @@ public class AdminController {
         this.appUserRepo = appUserRepo;
 
 
+        this.reporter = reporter;
     }
 
 
@@ -119,6 +129,9 @@ public class AdminController {
         Page<LigneAbsence> absencePage = ligneAbsenceRepo.findByEnseignantNomEnseignantContaining(
                 keyword, dep, date1, date2, cren,PageRequest.of(page, size)
         );
+        for (LigneAbsence ligneAbsence:absencePage.getContent()){
+            System.out.println(ligneAbsence.getEnseignant().getNomEnseignant());
+        }
             keyword1=keyword;
             keyword="";
 
@@ -749,7 +762,68 @@ if(listNonNotified.size()<4)index=listNonNotified.size();
 
         return "Dashboard"; // Ensure this returns the correct view name
     }
+    private Reporter reporter;
 
+    @GetMapping(value = "/print", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<byte[]> print(Model model,
+                                        @RequestParam(value = "page", defaultValue = "0") int page,
+                                        @RequestParam(value = "size", defaultValue = "5") int size,
+                                        @RequestParam(value = "keyword", defaultValue = "") String keyword,
+                                        @RequestParam(value = "dep", defaultValue = "") String dep,
+                                        @RequestParam(value = "date1", required = false) String date1Str,
+                                        @RequestParam(value = "date2", required = false) String date2Str,
+                                        @RequestParam(value = "keyword1",defaultValue = "", required = false)String keyword1,
+                                        @RequestParam(value = "cren",defaultValue = "")String cren) throws JRException, IOException {
+        byte[] report = null;
+        Map<String, Object> map = new HashMap<>();
+
+
+        LocalDate date1 = null;
+        LocalDate date2 = null;
+
+        try {
+            if (date1Str != null && !date1Str.isEmpty()) {
+                date1 = LocalDate.parse(date1Str);
+            } else {
+                date1 = LocalDate.now().minusMonths(1);
+            }
+
+            if (date2Str != null && !date2Str.isEmpty()) {
+                date2 = LocalDate.parse(date2Str);
+            } else {
+                date2 = LocalDate.now();
+            }
+        } catch (DateTimeParseException e) {
+            // Gestion d'une date mal formée (facultatif)
+        }
+        List<LigneAbsence> absencePage = ligneAbsenceRepo.findByEnseignantNomEnseignantContaining(
+                keyword, dep, date1, date2, cren);
+        List<LigneAbsenceDTO> dtoList = absencePage.stream()
+                .map(LigneAbsenceDTO::new)
+                .collect(Collectors.toList());
+
+
+        map.put("date1",date1);
+        map.put("date2",date2);
+
+
+System.out.println("Taille de la liste envoyé a jasper = "+dtoList.size());
+
+        if (absencePage != null && !absencePage.isEmpty()) {
+            report = reporter.reports(map,dtoList );
+        } else {
+            throw new FileNotFoundException("Aucune donnée trouvée pour générer le rapport.");
+        }
+
+        // Retourner le PDF comme réponse HTTP
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDisposition(ContentDisposition.inline().filename("report.pdf").build());
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(report);
+    }
     @GetMapping("/api/absences")
     @ResponseBody
     public List<Object[]> getAbsencesByEnseignant() {

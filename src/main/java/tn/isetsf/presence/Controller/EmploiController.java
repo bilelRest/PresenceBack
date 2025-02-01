@@ -39,16 +39,16 @@ public class EmploiController {
 
     @PostMapping(value = "/ens",produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Ens> getEnseignant(){
-         return enstRepo.findAll();
+        return enstRepo.findAll();
 
-           }
+    }
 
 
 
 
     @GetMapping(value = "/emploi/creneau")
     public Boolean getEnsi(@RequestParam String salle) {
-        List<Emploi> emploi = emploiRepo.trouverCreneau("1", "1", salle, "1", "6");
+        List<Emploi> emploi = emploiRepo.trouverCreneau("1", "1", salle, "", "7");
 
 
 
@@ -56,8 +56,8 @@ public class EmploiController {
 
         LigneAbsence ligneAbsence = new LigneAbsence();
         if (!emploi.isEmpty()) {
-System.out.println("emploi trouvé"+emploi.get(0).toString());
-System.out.println("salle = "+emploi.get(0).getNom_salle()+" seance =  "+emploi.get(0).getSeance1()+" enseigant =  "+ emploi.get(0).getEnsi1());
+            System.out.println("emploi trouvé"+emploi.get(0).toString());
+            System.out.println("salle = "+emploi.get(0).getNom_salle()+" seance =  "+emploi.get(0).getSeance1()+" enseigant =  "+ emploi.get(0).getEnsi1());
             if (!ligneAbsenceRepo.trouverAbsence( LocalDate.now(),emploi.get(0).getNom_salle(),emploi.get(0).getSeance1(), emploi.get(0).getEnsi1()).isEmpty()) {
                 System.out.println("Ligne absence  déja existante");
                 return false;
@@ -66,11 +66,11 @@ System.out.println("salle = "+emploi.get(0).getNom_salle()+" seance =  "+emploi.
 
 
 
-        Boolean notified = false;
+                Boolean notified = false;
 
-           Optional<Ens> ens = enstRepo.findById(emploi.get(0).getEnsi1());
+                Optional<Ens> ens = enstRepo.findById(emploi.get(0).getEnsi1());
 
-           String msg = "Mr " + ens.get().getNomEnseignant() + "On vous informe que vous etes  absent le : " + LocalDate.now() + " à la salle : " + salle + " seances de :" + emploi.get(0).getNom_seance();
+                String msg = "Mr " + ens.get().getNomEnseignant() + "On vous informe que vous etes  absent le : " + LocalDate.now() + " à la salle : " + salle + " seances de :" + emploi.get(0).getNom_seance();
 
 
                 for (Emploi emploi1 : emploi) {
@@ -101,8 +101,8 @@ System.out.println("salle = "+emploi.get(0).getNom_salle()+" seance =  "+emploi.
                 return true;
             }} else {
             System.out.println("Aucun creneau trouver !!");
-                return false;
-            }
+            return false;
+        }
 
     }
     @GetMapping(value = "/lbs",produces = MediaType.APPLICATION_JSON_VALUE)

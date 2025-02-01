@@ -1,0 +1,44 @@
+package tn.isetsf.presence.report;
+
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanArrayDataSource;
+import org.springframework.stereotype.Service;
+import tn.isetsf.presence.Entity.LigneAbsenceDTO;
+
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
+
+@Service
+
+public class Reporter {
+
+
+    public byte[] reports(Map<String, Object> params, List<LigneAbsenceDTO> list) throws JRException, IOException {
+        InputStream inputStream = getClass().getResourceAsStream("/reports/etatGlobal.jrxml");
+
+        if (inputStream == null) {
+            throw new FileNotFoundException("Le fichier de rapport 'etatGlobal.jrxml' est introuvable !");
+        }
+
+        try {
+            JRBeanArrayDataSource dataSource = new JRBeanArrayDataSource(list.toArray());
+            JasperReport jasperReport = JasperCompileManager.compileReport(inputStream);
+            JasperPrint print = JasperFillManager.fillReport(jasperReport, params, dataSource);
+
+            try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+                JasperExportManager.exportReportToPdfStream(print, outputStream);
+                return outputStream.toByteArray();
+            }
+        } finally {
+            inputStream.close(); // Fermeture du fichier .jrxml
+        }
+    }
+
+
+
+
+}

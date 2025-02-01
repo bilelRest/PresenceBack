@@ -145,9 +145,9 @@ public class PresenceApplication {
 //				appUser2.setActif(true);
 //			}
 
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+//			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-			LocalDate dateNaissance = LocalDate.parse("30-12-1985", formatter);
+//			LocalDate dateNaissance = LocalDate.parse("30-12-1985", formatter);
 //appUserInterface.AddRoleToUser("admin","ADMIN");
 //appUserInterface.AddRoleToUser("user2","ENSEIGNANT");
 //			AppUser appUser=new AppUser("admin","Bilel","BENABDALLAH","Sfax","Sfax","bilel@apirest.tech",null,98186144,0,0,true,"",null,"","1234",null);
@@ -155,7 +155,7 @@ public class PresenceApplication {
 //			appUserInterface.AddUser(appUser);
 //
 //System.out.println(appUserRepo.findAll());
-//
+
 //			appRoleRepo.save(new AppRole(null, "ADMIN"));
 //			appRoleRepo.save(new AppRole(null, "ENSEIGNANT"));
 //			appRoleRepo.save(new AppRole(null, "ETUDIANT"));

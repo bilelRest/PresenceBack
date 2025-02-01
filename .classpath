@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry excluding="tn/isetsf/presence/webThymeleaf/" kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/main/java/tn/isetsf/presence/webThymeleaf"/>
+	<classpathentry kind="src" path="src/test/java"/>
+	<classpathentry kind="lib" path=".mvn/wrapper/maven-wrapper.jar"/>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>

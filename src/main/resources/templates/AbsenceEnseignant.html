@@ -26,9 +26,16 @@
 <div layout:fragment="content1">
     <div class="container mt-2">
         <div class="card">
-            <div class="card-header">
+            <div class="card-header d-flex  ">
+                <div>
                 <h1>Absences Enseignants</h1>
+                </div>
+                    <div style="margin-left:30%">
+                        <a class="btn btn-outline-primary" title="Imprimer" target="_blank" th:href="@{/print}">
+                    <i class="bi bi-printer"></i></a>
+                </div>
             </div>
+
 
             <div class="container mt-3"> <!-- Conteneur de recherche et filtres -->
                 <form th:action="@{/AbsenceEnseignant}" method="get">
@@ -61,7 +68,7 @@
                         <!-- Filtre par département -->
                         <div class="col-md-3">
                             <label class="form-label mb-2">Département</label>
-                            <select title="Filtrer par département" class="form-select" name="dep" onchange="this.form.submit()">
+                            <select title="Filtrer par département" class="form-select" name="dep" id="dep" onchange="this.form.submit()">
                                 <option th:text="${dep}"></option>
                                 <option value="">Tous</option>
                                 <optgroup label="Départements">

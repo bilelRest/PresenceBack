@@ -21,6 +21,8 @@ public interface LigneAbsenceRepo extends JpaRepository<LigneAbsence, Long> {
     @Query("SELECT la FROM LigneAbsence la WHERE la.enseignant.nomEnseignant LIKE %:keyword% AND la.nomdepfiliere LIKE %:dep% AND la.date>= :date1 AND la.date<= :date2 AND la.seanceDouble LIKE %:cren%")
     Page<LigneAbsence> findByEnseignantNomEnseignantContaining(@Param("keyword") String keyword,@Param("dep")String dep, @Param("date1") LocalDate date1,@Param("date2") LocalDate date2,@Param("cren")String cren,Pageable pageable);
 
+    @Query("SELECT la FROM LigneAbsence la WHERE la.enseignant.nomEnseignant LIKE %:keyword% AND la.nomdepfiliere LIKE %:dep% AND la.date>= :date1 AND la.date<= :date2 AND la.seanceDouble LIKE %:cren%")
+    List<LigneAbsence> findByEnseignantNomEnseignantContaining(@Param("keyword") String keyword,@Param("dep")String dep, @Param("date1") LocalDate date1,@Param("date2") LocalDate date2,@Param("cren")String cren);
 
     @Query("SELECT la FROM LigneAbsence la WHERE la.nomdepfiliere LIKE %:keyword%")
     Page<LigneAbsence> findByDepartementContaining(@Param("keyword") String keyword, Pageable pageable);
