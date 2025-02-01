@@ -1,6 +1,6 @@
 FROM openjdk:17-jdk-alpine
 
-RUN apk add --no-cache maven
+RUN apk add --no-cache maven ttf-freefont fontconfig
 
 COPY pom.xml .
 COPY src ./src
