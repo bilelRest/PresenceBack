@@ -19,7 +19,7 @@ public class Reporter {
 
     public byte[] reports(Map<String, Object> params, List<LigneAbsenceDTO> list) throws JRException, IOException {
         InputStream inputStream = getClass().getResourceAsStream("/reports/etatGlobal.jrxml");
-
+System.out.println(params);
         if (inputStream == null) {
             throw new FileNotFoundException("Le fichier de rapport 'etatGlobal.jrxml' est introuvable !");
         }

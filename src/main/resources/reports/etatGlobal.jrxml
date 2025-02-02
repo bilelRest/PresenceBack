@@ -2,18 +2,43 @@
 <!-- Created with Jaspersoft Studio version 9.0.0.final using JasperReports Library version 6.21.0-4f56c4f36cd19e17675219a9ac4692d5f0f13b06  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="etatGlobal" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="45c7f87c-1b46-4cf4-80cd-e6663964a439">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
-		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
-		<parameter name="date1" class="java.sql.Date"/>
-		<parameter name="date2" class="java.sql.Date"/>
-		<field name="nom_seance" class="java.lang.String"/>
-		<field name="nom_matiere" class="java.lang.String"/>
-		<field name="semestre1" class="java.lang.String"/>
-		<field name="nomdepfiliere" class="java.lang.String"/>
-		<field name="date" class="java.lang.String"/>
-		<field name="nomEnseignant" class="java.lang.String"/>
-	<background>
-		<band/>
-	</background>
+	<style name="Table_TH" mode="Opaque" backcolor="#0000FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#BFBFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<parameter name="date_impr" class="java.lang.String"/>
+	<parameter name="date1" class="java.lang.String"/>
+	<parameter name="date2" class="java.lang.String"/>
+	<parameter name="app_user" class="java.lang.String"/>
+	<field name="nom_seance" class="java.lang.String"/>
+	<field name="nom_matiere" class="java.lang.String"/>
+	<field name="semestre1" class="java.lang.String"/>
+	<field name="nomdepfiliere" class="java.lang.String"/>
+	<field name="date" class="java.lang.String"/>
+	<field name="nomEnseignant" class="java.lang.String"/>
 	<title>
 		<band height="94">
 			<rectangle>
@@ -36,119 +61,215 @@
 					<font size="16" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Direction Générale
+
 Des Etudes Technologique ]]></text>
 			</staticText>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="56">
-			<staticText>
-				<reportElement x="131" y="-3" width="310" height="30" uuid="b01637bb-b9db-4908-afe7-daee19c2b0b5"/>
-				<textElement textAlignment="Center" verticalAlignment="Top">
-					<font size="20" isBold="true"/>
-				</textElement>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="20" width="120" height="30" uuid="c48e2ac6-549a-40f9-86ed-275b57850727"/>
-				<textElement textAlignment="Center" verticalAlignment="Top">
+		<band height="86">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="103" y="32" width="160" height="30" uuid="f595e541-1763-4f0c-a707-81a62c148945"/>
+				<textElement verticalAlignment="Middle">
 					<font size="16" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Périodes de :]]></text>
+				<textFieldExpression><![CDATA[$P{date1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="279" y="34" width="120" height="30" uuid="256235d9-541f-449d-8867-542c3d75509c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{date1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="120" y="0" width="310" height="30" uuid="97e39724-384c-4dd5-8ad0-8548f1c789cb"/>
+				<textElement>
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Etat des absences des enseignants]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="282" y="25" width="120" height="30" uuid="3ee592cd-3afd-4c64-b5f0-ad4bd34aad2e"/>
-				<textElement textAlignment="Center" verticalAlignment="Top">
-					<font size="16" isBold="true"/>
+				<reportElement x="0" y="30" width="100" height="30" uuid="3959a706-b4c6-4a77-aa1c-8544c2ba5460"/>
+				<textElement verticalAlignment="Middle">
+					<font size="18"/>
+				</textElement>
+				<text><![CDATA[Période de :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="253" y="32" width="26" height="30" uuid="85d08b00-d947-4e71-8705-8190b0ac3678"/>
+				<textElement verticalAlignment="Middle">
+					<font size="18"/>
 				</textElement>
 				<text><![CDATA[à :]]></text>
 			</staticText>
-			<line>
-				<reportElement x="-30" y="-5" width="610" height="2" forecolor="#666666" uuid="a5523c11-baf9-4163-ad61-705d0d787409"/>
-			</line>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="36">
-			<line>
-				<reportElement x="-30" y="-6" width="610" height="1" forecolor="#666666" uuid="b7d11193-6ea5-4e9b-bade-e81ef599d932"/>
-			</line>
+		<band height="30">
 			<staticText>
-				<reportElement x="140" y="1" width="90" height="30" uuid="8598b5ec-0a4a-4cb6-938e-200ed1bfe663"/>
-				<text><![CDATA[Matiere]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="5" y="0" width="134" height="30" uuid="5bb4be95-0235-4034-8952-bd909b7bac99"/>
-				<text><![CDATA[Nom et prenom]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="230" y="0" width="120" height="30" uuid="2448c707-2595-4486-8606-053391072b70"/>
-				<text><![CDATA[Seance]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="350" y="3" width="74" height="30" uuid="50e5e209-b535-4815-8e46-9fc989e06abb"/>
+				<reportElement x="0" y="0" width="90" height="30" uuid="53a2a4fd-6c9a-4a78-bd2a-1cdeb4b59c07"/>
+				<box leftPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Date]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="420" y="1" width="74" height="30" uuid="f52dccd7-9866-497b-9189-f644bbe38aee"/>
-				<text><![CDATA[Semestre]]></text>
+				<reportElement x="90" y="0" width="120" height="30" uuid="38994282-ca2f-4e67-9b41-d3c3a9bd6d5c"/>
+				<box leftPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Enseignant]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="498" y="0" width="74" height="30" uuid="2ccf41aa-b54b-4b91-8f33-0022e44b2df1"/>
-				<text><![CDATA[Dept]]></text>
+				<reportElement x="210" y="0" width="90" height="30" uuid="8d4e4371-7c59-4f25-ab7e-0d1489a573a5"/>
+				<box leftPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Séance]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="0" width="140" height="30" uuid="2826084a-b2d0-40a7-8cf9-96df74b05b56"/>
+				<box leftPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Matière]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="0" width="70" height="30" uuid="64b7f660-eea2-443c-88f1-89be7acdcd28"/>
+				<box leftPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Departement]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="510" y="0" width="55" height="30" uuid="5aadc101-fcbd-4a25-94f1-502f0c841bd5"/>
+				<box leftPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Semèstre]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="50">
-
-						<textField>
-							<reportElement x="0" y="0" width="150" height="30" uuid="2032d318-710f-44d6-b536-3cb3944ba19f"/>
-							<textFieldExpression><![CDATA[$F{nomEnseignant}]]></textFieldExpression>
-						</textField>
-						<textField>
-							<reportElement x="160" y="0" width="140" height="30" uuid="37dbea48-b045-4ed9-9900-9bd95e5167f1"/>
-							<textFieldExpression><![CDATA[$F{nom_matiere}]]></textFieldExpression>
-						</textField>
-						<textField>
-							<reportElement x="300" y="0" width="100" height="30" uuid="938988e1-07ba-44d4-a4dc-d9fa8caed222"/>
-							<textFieldExpression><![CDATA[$F{nom_seance}]]></textFieldExpression>
-						</textField>
-						<textField>
-							<reportElement x="400" y="0" width="70" height="30" uuid="344fa461-5166-476f-b962-c2f25324803c"/>
-							<textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
-						</textField>
-						<textField>
-							<reportElement x="470" y="0" width="40" height="30" uuid="91bbf872-9ecd-4101-a2e0-6081b3350b5d"/>
-							<textFieldExpression><![CDATA[$F{semestre1}]]></textFieldExpression>
-						</textField>
-						<textField>
-							<reportElement x="510" y="0" width="38" height="30" uuid="5dbca16a-5d57-4707-bb93-2eaaf027b29c"/>
-							<textFieldExpression><![CDATA[$F{nomdepfiliere}]]></textFieldExpression>
-						</textField>
-
+		<band height="30">
+			<textField>
+				<reportElement x="0" y="0" width="90" height="30" uuid="5063c52e-07ba-4ac1-95c3-c3f20662b10d"/>
+				<box leftPadding="5">
+					<pen lineWidth="1.0" lineColor="#000000"/>
+					<topPen lineWidth="1.0" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="0" width="120" height="30" uuid="8eea7d63-099d-449a-af5d-84bfff169d34"/>
+				<box leftPadding="5">
+					<pen lineWidth="1.0" lineColor="#000000"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nomEnseignant}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="210" y="0" width="90" height="30" uuid="1b4b2f54-a200-4fa8-8341-dd3b97197383"/>
+				<box leftPadding="5">
+					<pen lineWidth="1.0" lineColor="#000000"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nom_seance}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="300" y="0" width="140" height="30" uuid="f84b3026-bd7f-4500-87d6-270f2efc1eea"/>
+				<box leftPadding="5">
+					<pen lineWidth="1.0" lineColor="#000000"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nom_matiere}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="440" y="0" width="70" height="30" uuid="d5e65661-b516-47dc-99c5-b822c9893e48"/>
+				<box leftPadding="5">
+					<pen lineWidth="1.0" lineColor="#000000"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nomdepfiliere}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="510" y="0" width="55" height="30" uuid="1227c4fa-dfb0-4f94-ad5a-ccf8f8f3ca8d"/>
+				<box leftPadding="5">
+					<pen lineWidth="1.0" lineColor="#000000"/>
+					<topPen lineWidth="1.0" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{semestre1}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band/>
-	</columnFooter>
 	<pageFooter>
-		<band height="17">
+		<band height="57">
+			<staticText>
+				<reportElement x="2" y="22" width="100" height="30" uuid="c344d556-390c-43ea-bfd7-f43975ea3529"/>
+				<text><![CDATA[Date d'impression : ]]></text>
+			</staticText>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="94" y="14" width="100" height="30" uuid="44615ae7-d412-4d89-82d0-6f5ccee4f052"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{date_impr}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="350" y="20" width="61" height="21" uuid="c33e6d73-24f6-4b25-bdce-706d486f5e1f"/>
+				<text><![CDATA[Utilisateur :]]></text>
+			</staticText>
 			<textField>
-				<reportElement mode="Opaque" x="0" y="4" width="515" height="13" backcolor="#E6E6E6" uuid="55a6271b-7703-4797-877f-40748b5521b1"/>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
-			</textField>
-			<textField evaluationTime="Report">
-				<reportElement mode="Opaque" x="515" y="4" width="40" height="13" backcolor="#E6E6E6" uuid="6adef2f0-7ea4-46e7-a6e2-b072f51e9215"/>
-				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
-			<textField pattern="EEEEE dd MMMMM yyyy">
-				<reportElement x="0" y="4" width="100" height="13" uuid="5beb0a16-1abd-46a3-b4c4-317968887975"/>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				<reportElement x="410" y="20" width="145" height="21" uuid="c1e810f4-51e3-43ab-8f14-d826fb7b2412"/>
+				<textFieldExpression><![CDATA[$P{app_user}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>
-	<summary>
-		<band/>
-	</summary>
 </jasperReport>

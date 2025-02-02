@@ -802,10 +802,12 @@ if(listNonNotified.size()<4)index=listNonNotified.size();
                 .map(LigneAbsenceDTO::new)
                 .collect(Collectors.toList());
 
-
-        map.put("date1",date1);
-        map.put("date2",date2);
-
+DateTimeFormatter formatter=DateTimeFormatter.ofPattern("dd MMMM yyyy");
+        map.put("date1", formatter.format(LocalDate.now()));
+        map.put("date2", formatter.format(LocalDate.now()));
+        map.put("date_impr",formatter.format(LocalDate.now()));
+        map.put("app_user",findLogged().getUsername());
+System.out.println("Date de debut : "+LocalDate.now()+" et date de fin : "+date2Str);
 
 System.out.println("Taille de la liste envoyé a jasper = "+dtoList.size());
 
