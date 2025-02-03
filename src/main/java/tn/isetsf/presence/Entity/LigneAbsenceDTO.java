@@ -15,6 +15,7 @@ public class LigneAbsenceDTO {
     private String date;
     private String nom_matiere;
     private String semestre1;
+    private String nom_salle;
 
     public LigneAbsenceDTO(LigneAbsence ligne) {
         this.nomEnseignant = (ligne.getEnseignant() != null) ? ligne.getEnseignant().getNomEnseignant() : null;
@@ -23,6 +24,7 @@ public class LigneAbsenceDTO {
         this.date = String.valueOf(ligne.getDate());
         this.nom_matiere = ligne.getNom_matiere();
         this.semestre1 = ligne.getSemestre1();
+        this.nom_salle=ligne.getNom_salle();
     }
 }
 

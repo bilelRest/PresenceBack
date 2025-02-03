@@ -80,7 +80,7 @@ Des Etudes Technologique ]]></text>
 				<textElement verticalAlignment="Middle">
 					<font size="16" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{date1}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{date2}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="120" y="0" width="310" height="30" uuid="97e39724-384c-4dd5-8ad0-8548f1c789cb"/>
@@ -103,6 +103,7 @@ Des Etudes Technologique ]]></text>
 				</textElement>
 				<text><![CDATA[à :]]></text>
 			</staticText>
+
 		</band>
 	</pageHeader>
 	<columnHeader>

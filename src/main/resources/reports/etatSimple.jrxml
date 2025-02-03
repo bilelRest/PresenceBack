@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 9.0.0.final using JasperReports Library version 6.21.0-4f56c4f36cd19e17675219a9ac4692d5f0f13b06  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="etatSimple" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e5a87d03-585d-497e-9d4a-fdf48ee54a0c">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="nomEnseignant" class="java.lang.String"/>
+	<field name="nomdepfiliere" class="java.lang.String"/>
+	<field name="nom_seance" class="java.lang.String"/>
+	<field name="date" class="java.lang.String"/>
+	<field name="nom_matiere" class="java.lang.String"/>
+	<field name="semestre1" class="java.lang.String"/>
+	<field name="nom_salle" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="81" splitType="Stretch">
+			<staticText>
+				<reportElement x="330" y="0" width="229" height="78" uuid="18bff59c-0d8f-43bf-a598-49ee1ff75589"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Institue Supérieur Des Etudes Technologique De Sfax]]></text>
+			</staticText>
+			<image>
+				<reportElement x="240" y="10" width="62" height="68" uuid="f5575f1f-96e7-4be2-9f66-d1ec22cee878"/>
+				<imageExpression><![CDATA["src/main/resources/reports/logo.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="2" y="0" width="208" height="81" uuid="eb815a6e-6604-44aa-977f-808aa98ddc4e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Direction Générale
+Des Etudes Technologique ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="78" width="555" height="1" uuid="8114413e-43ad-4068-8ff3-b99afb0eefea"/>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="50" splitType="Stretch">
+			<staticText>
+				<reportElement x="132" y="10" width="290" height="31" uuid="2c787297-8cdf-470a-9bd0-932dfeb68c80"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="22" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Avis d'absence]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="355" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="2" width="170" height="49" uuid="0d50a110-2d3b-4d94-9e93-bd950a491c8a"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="18"/>
+				</textElement>
+				<text><![CDATA[Nom et prénom : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="149" width="170" height="37" uuid="2e8ee5eb-1362-4301-b39e-85c5e39177b8"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="18"/>
+				</textElement>
+				<text><![CDATA[Département : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="199" width="170" height="41" uuid="e09144bf-1cc5-4a57-8c6e-c11091e9ef0e"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="18"/>
+				</textElement>
+				<text><![CDATA[Matière : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="49" width="170" height="43" uuid="72006c19-96e3-42f1-94d6-ec1812b76707"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="18"/>
+				</textElement>
+				<text><![CDATA[Date de l'absence : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="239" width="170" height="50" uuid="5b136aea-9fb5-4451-81f4-e143f0e25aa2"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="18"/>
+				</textElement>
+				<text><![CDATA[Salle : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="99" width="170" height="44" uuid="4ad5218c-a174-481f-8136-c40a525a3578"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="18"/>
+				</textElement>
+				<text><![CDATA[Semestre : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="289" width="170" height="50" uuid="f957733e-20c8-4a25-bd40-cd0814f76e39"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="18"/>
+				</textElement>
+				<text><![CDATA[Sèance : ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="170" y="9" width="391" height="41" uuid="bfe59630-0eed-48a6-b4b4-5412d1d95199"/>
+				<textElement verticalAlignment="Middle">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nomEnseignant}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="170" y="50" width="391" height="41" uuid="8ab57bc2-4395-4120-84cb-a374291e1972"/>
+				<textElement verticalAlignment="Middle">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="175" y="102" width="391" height="41" uuid="142d4793-5655-490d-a1e3-6610c4a7db83"/>
+				<textElement verticalAlignment="Middle">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{semestre1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="175" y="147" width="391" height="41" uuid="5d63c6d4-a131-482e-8cac-7039b294913d"/>
+				<textElement verticalAlignment="Middle">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nomdepfiliere}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="174" y="199" width="391" height="41" uuid="2f762501-ce4b-4599-a0ec-0251e8662031"/>
+				<textElement verticalAlignment="Middle">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nom_matiere}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="172" y="244" width="391" height="41" uuid="f0e36a68-eac0-483d-a957-447990dc5ee5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nom_salle}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="173" y="291" width="391" height="41" uuid="4312b0c7-b2fc-483c-a30c-12d163d20748"/>
+				<textElement verticalAlignment="Middle">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nom_seance}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="306" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="8" width="555" height="170" backcolor="rgba(255, 255, 255, 0.0)" uuid="c185cf9a-1d9f-44ff-a180-27d14720b534"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="381" y="45" width="161" height="124" uuid="d76f1b18-ba24-45a9-8558-c50d90286ec8"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="18" y="44" width="312" height="124" uuid="09939c40-ae42-466a-9414-ed762e048e9b"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="90" y="10" width="152" height="46" uuid="7c7bef3f-8441-4026-bb04-957046f2dd30"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Signature et observation du chef département]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="381" y="15" width="146" height="21" uuid="66414acf-3149-4a66-8f8e-8ebfe0830240"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Signature de l'enseignant]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="185" width="555" height="80" uuid="b02cffae-b17e-4440-b43c-3c7d7921e2d2"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Institut Supérieur Des Etudes Technologiques De Sfax
+Adresse : Route de Mahdia Km 2.5 BP 88 A - 3099 Sfax
+T.: 74 431 425
+F.: 74 431 386
+Email: iset.sfax@sfax.r-iset.tn]]></text>
+			</staticText>
+			<textField pattern="dd MMMMM, yyyy">
+				<reportElement x="435" y="269" width="88" height="20" uuid="72a23cf7-ec60-4614-8699-22ce203ec1a4"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="309" y="269" width="132" height="20" uuid="705e88e3-6545-4466-b97e-f1b8fd15639e"/>
+				<text><![CDATA[Date d'impression de l'avis : ]]></text>
+			</staticText>
+			<textField pattern="HH:mm">
+				<reportElement x="523" y="269" width="32" height="20" uuid="26c15856-eb0d-4986-ad6c-a1de34e6cea5"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+</jasperReport>

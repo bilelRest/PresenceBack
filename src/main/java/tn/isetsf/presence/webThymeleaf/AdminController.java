@@ -6,12 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.context.annotation.Role;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-import org.springframework.data.domain.Pageable;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -28,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import tn.isetsf.presence.CalculDate;
 import tn.isetsf.presence.Entity.LigneAbsence;
 import tn.isetsf.presence.Entity.LigneAbsenceDTO;
+import tn.isetsf.presence.Entity.PrintType;
 import tn.isetsf.presence.Repository.EnstRepo;
 import tn.isetsf.presence.Repository.LigneAbsenceRepo;
 import tn.isetsf.presence.Repository.SalleRepo;
@@ -41,7 +39,7 @@ import tn.isetsf.presence.sec.repository.LoggedRepo;
 import tn.isetsf.presence.sec.service.AppUserInterfaceImpl;
 import tn.isetsf.presence.serviceMail.EmailService;
 
-import javax.annotation.security.RolesAllowed;
+import javax.persistence.Enumerated;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -79,6 +77,9 @@ public class AdminController {
     private final ServerStatusService serverStatusService;
     private final CalculDate calculDate = new CalculDate();
     private AppUserRepo appUserRepo;
+    private Reporter reporter;
+    @Enumerated
+      PrintType printType;
 
 
     public AdminController(LigneAbsenceRepo ligneAbsenceRepo, EnstRepo enstRepo, SalleRepo salleRepo, ServerStatusService serverStatusService, AppUserRepo appUserRepo, Reporter reporter) {
@@ -132,8 +133,8 @@ public class AdminController {
         for (LigneAbsence ligneAbsence:absencePage.getContent()){
             System.out.println(ligneAbsence.getEnseignant().getNomEnseignant());
         }
-            keyword1=keyword;
-            keyword="";
+        keyword1=keyword;
+        keyword="";
 
 
         model.addAttribute("keyword1",keyword1);
@@ -492,7 +493,7 @@ public class AdminController {
 
             }
         }
-            return "redirect:/Utilisateurs";
+        return "redirect:/Utilisateurs";
 
 
     }
@@ -573,20 +574,20 @@ public class AdminController {
         if (!conf.equals("") ) {
             String sessionConfCode = (String) httpSession.getAttribute("confcode");
 
-          //  if (sessionConfCode != null && sessionConfCode.equals(conf)) {
-                model.addAttribute("error", error);
-             //   AppUser appUser = appUserRepo.getById(id);
-                VerfPas verfPas = new VerfPas();
-                verfPas.setId(id);
-                verfPas.setAncienPass("");
-                verfPas.setNouveauPass("");
+            //  if (sessionConfCode != null && sessionConfCode.equals(conf)) {
+            model.addAttribute("error", error);
+            //   AppUser appUser = appUserRepo.getById(id);
+            VerfPas verfPas = new VerfPas();
+            verfPas.setId(id);
+            verfPas.setAncienPass("");
+            verfPas.setNouveauPass("");
 
-                model.addAttribute("userEdit", verfPas);
-                model.addAttribute("user", findLogged());
-                model.addAttribute("isAdmin", isAdmin());
-                model.addAttribute("test", "Hello check");
-                // Rediriger vers CheckPoint si le code est correct
-                return "redirect:/CheckPoint?id="+verfPas.getId();
+            model.addAttribute("userEdit", verfPas);
+            model.addAttribute("user", findLogged());
+            model.addAttribute("isAdmin", isAdmin());
+            model.addAttribute("test", "Hello check");
+            // Rediriger vers CheckPoint si le code est correct
+            return "redirect:/CheckPoint?id="+verfPas.getId();
 //            } else {
 //                // Rediriger vers déconnexion si le code est incorrect
 //                return "redirect:/deconnect";
@@ -651,12 +652,12 @@ public class AdminController {
     }
 
     @Data
-class VerfPas{
+    class VerfPas{
         private int id;
-      private String ancienPass;
-      private String nouveauPass;
+        private String ancienPass;
+        private String nouveauPass;
 
-}
+    }
 
     @GetMapping("/Profile")
     public String profile(Model model, HttpServletRequest request, HttpServletResponse response) {
@@ -734,15 +735,15 @@ class VerfPas{
         String fullDate = calculDate.JourEnTouteLettre() + "  " + dateNow;
 
         List<LigneAbsence> listNonNotified = ligneAbsenceRepo.findByNotifiedFalse();
-int index=0;
-if(listNonNotified.size()>4)index=5;
-if(listNonNotified.size()<4)index=listNonNotified.size();
+        int index=0;
+        if(listNonNotified.size()>4)index=5;
+        if(listNonNotified.size()<4)index=listNonNotified.size();
         if(!listNonNotified.isEmpty()){
             List<LigneAbsence> listNonNotifier = new ArrayList<>();
 
             for (int i = 0; i <index; i++) {
-            listNonNotifier.add(listNonNotified.get(i));
-        }
+                listNonNotifier.add(listNonNotified.get(i));
+            }
             model.addAttribute("listNonNotifier", listNonNotifier);
         }
         model.addAttribute("dateNow", fullDate);
@@ -762,9 +763,8 @@ if(listNonNotified.size()<4)index=listNonNotified.size();
 
         return "Dashboard"; // Ensure this returns the correct view name
     }
-    private Reporter reporter;
 
-    @GetMapping(value = "/print", produces = MediaType.APPLICATION_PDF_VALUE)
+    @PostMapping(value = "/print", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> print(Model model,
                                         @RequestParam(value = "page", defaultValue = "0") int page,
                                         @RequestParam(value = "size", defaultValue = "5") int size,
@@ -773,9 +773,36 @@ if(listNonNotified.size()<4)index=listNonNotified.size();
                                         @RequestParam(value = "date1", required = false) String date1Str,
                                         @RequestParam(value = "date2", required = false) String date2Str,
                                         @RequestParam(value = "keyword1",defaultValue = "", required = false)String keyword1,
-                                        @RequestParam(value = "cren",defaultValue = "")String cren) throws JRException, IOException {
+                                        @RequestParam(value = "cren",defaultValue = "")String cren,
+                                        @RequestParam(value = "id",required = false)Long id) throws JRException, IOException {
+        List<LigneAbsenceDTO> dtoList=new ArrayList<>();
         byte[] report = null;
         Map<String, Object> map = new HashMap<>();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDisposition(ContentDisposition.inline().filename("report.pdf").build());
+        if (id!=null){
+          Optional<LigneAbsence> ligneAbsence=ligneAbsenceRepo.findById(id);
+          if (ligneAbsence.isPresent()){
+              LigneAbsenceDTO dto=new LigneAbsenceDTO();
+              dto.setNomEnseignant(ligneAbsence.get().getEnseignant().getNomEnseignant());
+              dto.setNom_seance(ligneAbsence.get().getNom_seance());
+              dto.setSemestre1(ligneAbsence.get().getSemestre1());
+              dto.setDate(ligneAbsence.get().getDate().toString());
+              dto.setNomdepfiliere(ligneAbsence.get().getNomdepfiliere());
+              dto.setNom_matiere(ligneAbsence.get().getNom_matiere());
+              dto.setNom_salle(ligneAbsence.get().getNom_salle());
+              dtoList.add(dto);
+          }
+          if (!dtoList.isEmpty()){
+              report = reporter.reports(map,dtoList,PrintType.AVIS_SIMPLE );
+          }
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(report);
+        }
+
+        System.out.println("page "+page+" size "+size+" keyword "+keyword+" dep "+dep+" cern "+cren);
 
 
         LocalDate date1 = null;
@@ -796,31 +823,30 @@ if(listNonNotified.size()<4)index=listNonNotified.size();
         } catch (DateTimeParseException e) {
             // Gestion d'une date mal formée (facultatif)
         }
-        List<LigneAbsence> absencePage = ligneAbsenceRepo.findByEnseignantNomEnseignantContaining(
-                keyword, dep, date1, date2, cren);
-        List<LigneAbsenceDTO> dtoList = absencePage.stream()
+        Page<LigneAbsence> absencePage = ligneAbsenceRepo.findByEnseignantNomEnseignantContaining(
+                keyword1, dep, date1, date2, cren,PageRequest.of(page, size));
+       dtoList  = absencePage.stream()
                 .map(LigneAbsenceDTO::new)
                 .collect(Collectors.toList());
 
-DateTimeFormatter formatter=DateTimeFormatter.ofPattern("dd MMMM yyyy");
-        map.put("date1", formatter.format(LocalDate.now()));
-        map.put("date2", formatter.format(LocalDate.now()));
+        DateTimeFormatter formatter=DateTimeFormatter.ofPattern("dd MMMM yyyy");
+        map.put("date1", date1.toString());
+        System.out.println("date 1 = "+date1.toString()+" date 2 "+date2.toString());
+        map.put("date2",date2.toString());
         map.put("date_impr",formatter.format(LocalDate.now()));
         map.put("app_user",findLogged().getUsername());
-System.out.println("Date de debut : "+LocalDate.now()+" et date de fin : "+date2Str);
+        System.out.println("Date de debut : "+LocalDate.now()+" et date de fin : "+date2Str);
 
-System.out.println("Taille de la liste envoyé a jasper = "+dtoList.size());
+        System.out.println("Taille de la liste envoyé a jasper = "+dtoList.size());
 
         if (absencePage != null && !absencePage.isEmpty()) {
-            report = reporter.reports(map,dtoList );
+            report = reporter.reports(map,dtoList,PrintType.ABSENCE_GLOBAL );
         } else {
             throw new FileNotFoundException("Aucune donnée trouvée pour générer le rapport.");
         }
 
         // Retourner le PDF comme réponse HTTP
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDisposition(ContentDisposition.inline().filename("report.pdf").build());
+
 
         return ResponseEntity.ok()
                 .headers(headers)

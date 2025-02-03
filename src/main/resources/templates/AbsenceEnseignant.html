@@ -28,17 +28,26 @@
         <div class="card">
             <div class="card-header d-flex  ">
                 <div>
-                <h1>Absences Enseignants</h1>
+                    <h1>Absences Enseignants</h1>
                 </div>
-                    <div style="margin-left:30%">
-                        <a class="btn btn-outline-primary" title="Imprimer" target="_blank" th:href="@{/print}">
-                    <i class="bi bi-printer"></i></a>
+                <div style="margin-left:30%">
+                    <form id="printForm" th:action="@{/print}" target="_blank" method="post">
+                        <input type="hidden" name="keyword1" th:value="${keyword1}" ></input>
+                        <input type="hidden" name="keyword" th:value="${keyword}"></input>
+                        <input type="hidden"  name="dep" th:value="${dep}" ></input>
+                        <input type="hidden"  name="date1"  th:value="${date1}"></input>
+                        <input type="hidden"  name="date2"  th:value="${date2}"></input>
+                        <input type="hidden" name="cren"  th:value="${cren}" ></input>
+                        <button title="Imprimer tout" onclick="printForm.submit()" class="btn btn-outline-primary">  <i class="bi bi-printer"></i></button>
+                    </form>
+
                 </div>
             </div>
 
 
             <div class="container mt-3"> <!-- Conteneur de recherche et filtres -->
                 <form th:action="@{/AbsenceEnseignant}" method="get">
+
                     <div class="row mb-3 align-items-center"> <!-- Ligne de recherche et filtre par enseignant -->
 
                         <!-- Champ de recherche par mot-clé -->
@@ -85,26 +94,26 @@
 
                         <div class="row mb-3 align-items-center"> <!-- Ligne pour les dates -->
 
-                        <!-- Filtre par date de début -->
-                        <div class="col-md-3">
-                            <label for="date1" class="form-label">Début</label>
-                            <input title="Choisir la date de début" type="date" id="date1" name="date1" class="form-control" th:value="${date1}"
-                                 onchange="if(this.value) this.form.submit()"  >
-                        </div>
+                            <!-- Filtre par date de début -->
+                            <div class="col-md-3">
+                                <label for="date1" class="form-label">Début</label>
+                                <input title="Choisir la date de début" type="date" id="date1" name="date1" class="form-control" th:value="${date1}"
+                                       onchange="if(this.value) this.form.submit()"  >
+                            </div>
 
-                        <!-- Filtre par date de fin -->
-                        <div class="col-md-3">
-                            <label for="date2" class="form-label">Fin</label>
-                            <input title="Choisir la date de fin" type="date" id="date2" name="date2" class="form-control" th:value="${date2}"
-                                   onchange="if(this.value) this.form.submit()"     >
-                        </div>
+                            <!-- Filtre par date de fin -->
+                            <div class="col-md-3">
+                                <label for="date2" class="form-label">Fin</label>
+                                <input title="Choisir la date de fin" type="date" id="date2" name="date2" class="form-control" th:value="${date2}"
+                                       onchange="if(this.value) this.form.submit()"     >
+                            </div>
 
                             <div class="col-md-3">
                                 <label for="cren" class="form-label">
                                     Séance
                                 </label>
                                 <select title="Choisir le créneaux horaire souhaité " class="form-select" name="cren" id="cren" th:value="${cren}" onchange="this.form.submit()">
-                                  <option th:text="${cren}"></option>
+                                    <option th:text="${cren}"></option>
                                     <option value="">Tous</option>
 
                                     <optgroup label="Séance Simple">
@@ -128,8 +137,11 @@
 
                                 <!-- Bouton de réinitialisation -->
 
-                            </div></div></div>
+                            </div></div>
+
+                    </div>
                 </form>
+
                 <div class="col-md-2 d-flex align-items-end">
                     <form th:action="@{/AbsenceEnseignant}" method="get">
                         <input type="hidden" name="keyword" th:value="''" />
@@ -184,6 +196,15 @@
                         <td th:text="${abs.nom_jour}"></td>
                         <td th:text="${abs.date}"></td>
                         <td th:text="${abs.notified ? 'Oui' : 'Non'}"></td>
+                        <td>
+                            <form target="_blank" th:action="@{/print}" method="post">
+                                <input type="hidden" th:value="${abs.num}" name="id">
+
+                                    <button type="submit" class="btn btn-outline-secondary" title="Imprimer"><i class="bi bi-printer"></i> </button>
+                            </form>
+
+                        </td>
+
                         <td>
                             <button th:class="${abs.notified} ? 'd-none' : 'btn btn-outline-primary'"><i title="Envoyer un email de notification" class="bi bi-envelope-at"></i></button>
                         </td>
